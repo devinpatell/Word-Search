@@ -10,3 +10,4 @@ class GameBoardPiece:
     def __init__(self):
             self.letter = ALPHABET[((int)(26 * random.random()))]
             self.part_of_word = False
+            self.color = '#000000'

@@ -10,16 +10,21 @@ DEFAULT_FONT = ('Helvetica', 12)
 class WordSearchGUI:
     def __init__(self):
         self._game = WordSearch.WordSearch(12, open('fruits.txt'))
-        self._is_game_over = False
         self._root_window = tkinter.Tk()
         self._root_window.minsize(400, 445)
         self._canvas = tkinter.Canvas(
-            master = self._root_window, width = 600, height = 600,
+            master = self._root_window, width = 400, height = 445,
             background = '#ffffff')
 
         self._canvas.grid(
             row = 0, column = 0, padx = 0, pady = 0,
             sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W)
+
+        self._word_bank_text = tkinter.StringVar()
+        self._update_word_bank_text()
+        self._label2 = tkinter.Label(master = self._root_window,
+                                    textvariable=self._word_bank_text,
+                                     font=DEFAULT_FONT)
 
         
         self._display_text = tkinter.StringVar()
@@ -72,16 +77,15 @@ class WordSearchGUI:
             col = event.x // cell_width
             row = event.y // cell_height
             
+            worked = False
             if(self.first_move):
-                self._game.make_move(self.first_move[0], self.first_move[1], row, col)
+                worked = self._game.make_move(self.first_move[0], self.first_move[1], row, col)
                 self.first_move = []
             else:
                 self.first_move.append(row)
                 self.first_move.append(col)
-            print(self._game.found_words)
             
-            #make move, store col,row bc two clicks are needed
-
+            print(self._game.found_words)
             self._redraw()
 
     def _redraw(self) -> None:
@@ -115,7 +119,7 @@ class WordSearchGUI:
             for c, piece in enumerate(row):
                 y = r * cell_height
                 x = c * cell_width
-                self._canvas.create_text(x + cell_width / 2.0, y + cell_height / 2.0, font=DEFAULT_FONT, anchor=tkinter.W, width=100, text= piece.letter)
+                self._canvas.create_text(x + cell_width / 2.0, y + cell_height / 2.0, font=DEFAULT_FONT,activefill='blue', fill=piece.color, anchor=tkinter.W, width=100, text= piece.letter)
 
         self._canvas.update()
 
