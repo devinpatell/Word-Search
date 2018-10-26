@@ -22,11 +22,11 @@ class WordSearchGUI:
 
         self._word_bank_text = tkinter.StringVar()
         self._update_word_bank_text()
-        self._label2 = tkinter.Label(master = self._root_window,
-                                    textvariable=self._word_bank_text,
-                                     font=DEFAULT_FONT)
+        self._label2 = tkinter.Label(master = self._root_window, textvariable=self._word_bank_text, font=DEFAULT_FONT)
+        self._label2.grid(
+            row = 0, column = 1, padx = 10, pady = 10,
+            sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W)
 
-        
         self._display_text = tkinter.StringVar()
         self._update_display_text()
         self._label1 = tkinter.Label(master = self._root_window,
@@ -58,25 +58,26 @@ class WordSearchGUI:
             self._display_text.set("{} word left".format(temp_num_words_left))
         else:
             self._display_text.set("{} words left".format(temp_num_words_left))
-        
-        
+    def _update_word_bank_text(self):
+        pass
 
+    
     def _on_canvas_clicked(self, event: tkinter.Event) -> None:
         '''performs an wordSearch move when the canvas is clicked.'''
-        if not self._is_game_over:
+        if not self._game._is_game_over:
             canvas_width = self._canvas.winfo_width()
             canvas_height = self._canvas.winfo_height()
 
             rows = self._game.numRows
             columns = self._game.numColumns
-            
+
             cell_width = canvas_width // columns
             cell_height = canvas_height // rows
 
-            
+
             col = event.x // cell_width
             row = event.y // cell_height
-            
+
             worked = False
             if(self.first_move):
                 worked = self._game.make_move(self.first_move[0], self.first_move[1], row, col)
@@ -84,7 +85,7 @@ class WordSearchGUI:
             else:
                 self.first_move.append(row)
                 self.first_move.append(col)
-            
+
             print(self._game.found_words)
             self._redraw()
 
@@ -97,13 +98,13 @@ class WordSearchGUI:
         canvas_height = self._canvas.winfo_height()
         self._canvas.create_rectangle(0, 0, canvas_width, canvas_height,
                                       outline='black')
-        
+
         rows = self._game.numRows
         columns = self._game.numColumns
-        
+
         cell_width = canvas_width // columns
         cell_height = canvas_height // rows
-        
+
         for i in range(rows):
             self._canvas.create_line(0, (i * cell_height),
                                      canvas_width,(i * cell_height),
@@ -126,18 +127,3 @@ class WordSearchGUI:
 
 if __name__ == '__main__':
     WordSearchGUI().start()
-    
-    
-        
-
-        
-        
-
-
-
-
-
-
-
-
-        
